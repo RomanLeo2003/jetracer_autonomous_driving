@@ -12,17 +12,12 @@ import tqdm
 from collections import namedtuple
 from typing import NamedTuple, List
 
-model = torchvision.models.vit_l_16(weights=torchvision.models.ViT_L_16_Weights.IMAGENET1K_SWAG_E2E_V1)
-model.heads = torch.nn.Linear(1024, 2)  # можно заморозить некоторые слои, надо экспериментировать
 
-
-# model = torchvision.models.swin_v2_b(weights='IMAGENET1K_V1') # трансформер полегче в 3 раза
-# model.head = torch.nn.Linear(1024, 2)
-
-torch.manual_seed(42)
-np.random.seed(42)
-random.seed(42)
-os.environ['PYTHONHASHSEED'] = str(42)
+def seed(seed_value):
+    torch.manual_seed(42)
+    np.random.seed(42)
+    random.seed(42)
+    os.environ['PYTHONHASHSEED'] = str(42)
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 accelerator = Accelerator(gradient_accumulation_steps=4, mixed_precision='bf16')
